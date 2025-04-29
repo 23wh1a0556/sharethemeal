@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orphanage List</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url('https://c8.alamy.com/comp/2D846M3/concept-of-charity-and-donation-background-with-hands-flat-design-vector-illustration-2D846M3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .orphanage-item {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .orphanage-item h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .orphanage-item p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .donate-button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .donate-button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Orphanage List</h1>
+    <div id="orphanageList">
+        </div>
+    <script>
+        async function fetchOrphanages() {
+            try {
+                const response = await fetch('/getOrphanages');
+                const orphanages = await response.json();
+
+                const orphanageListDiv = document.getElementById('orphanageList');
+                orphanages.forEach(orphanage => {
+                    const orphanageItem = document.createElement('div');
+                    orphanageItem.classList.add('orphanage-item');
+                    orphanageItem.innerHTML = `
+                        <h2>${orphanage.orphan_name}</h2>
+                        <p>Address: ${orphanage.address}</p>
+                        <a href="donate_to_orphanage.html?orphanageId=${orphanage.id}" class="donate-button">Donate Food</a>
+                    `;
+                    orphanageListDiv.appendChild(orphanageItem);
+                });
+            } catch (error) {
+                console.error('Error fetching orphanages:', error);
+            }
+        }
+
+        fetchOrphanages();
+    </script>
+</body>
+</html>

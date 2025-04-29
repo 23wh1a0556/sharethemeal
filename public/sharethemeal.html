@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Share Meal</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('https://c8.alamy.com/comp/2D846M3/concept-of-charity-and-donation-background-with-hands-flat-design-vector-illustration-2D846M3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            color: #333;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Share Meal (Max 2 People)</h2>
+        <form id="shareMealForm">
+            <label for="foodDescription">Food Description</label>
+            <input type="text" id="foodDescription" name="foodDescription" required />
+
+            <label for="location">Location</label>
+            <textarea id="location" name="location" rows="3" required></textarea>
+
+            <label for="contactInfo">Contact Info</label>
+            <input type="text" id="contactInfo" name="contactInfo" required />
+
+            <button type="submit">Share Meal</button>
+        </form>
+        <script>
+            document.getElementById("shareMealForm").addEventListener("submit", async function(event) {
+                event.preventDefault();
+                const foodDescription = document.getElementById("foodDescription").value;
+                const location = document.getElementById("location").value;
+                const contactInfo = document.getElementById("contactInfo").value;
+
+                const userName = localStorage.getItem('userName');
+                try {
+                    const response = await fetch('/shareMealSubmit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ sharerName: userName, foodDescription, location, contactInfo }),
+                    });
+                    if (response.ok) {
+                        alert('Meal shared successfully!');
+                    } else {
+                        alert('Failed to share meal.');
+                    }
+                } catch (error) {
+                    console.error('Error sharing meal:', error);
+                    alert('An error occurred.');
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

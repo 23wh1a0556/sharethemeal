@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteers</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .individual { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; }
+        button { padding: 8px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>Volunteers</h1>
+    <div id="individuals">
+        <div class="individual">
+            <h2>Alekhya</h2>
+            <p>Phone: 7780153029</p>
+            <p>Email: alekhya@example.com</p>
+            <p>Address: 123 Street, City</p>
+            <button onclick="showDonationPopup('Alekhya', 'alekhya@example.com')">Choose</button>
+        </div>
+        <div class="individual">
+            <h2>Vaishnavi</h2>
+            <p>Phone: 6302224397</p>
+            <p>Email: vaishnavivaishnavi8424@gmail.com</p>
+            <p>Address: 123 Warangal</p>
+            <button onclick="showDonationPopup('Vaishnavi', 'vaishnavivaishnavi8424@gmail.com')">Choose</button>
+        </div>
+        <div class="individual">
+            <h2>Diya</h2>
+            <p>Phone: 7416098440</p>
+            <p>Email: diya@gmail.com</p>
+            <p>Address: 456 Bangalore</p>
+            <button onclick="showDonationPopup('Diya', 'diya@gmail.com')">Choose</button>
+        </div>
+        <div class="individual">
+            <h2>Bhavya</h2>
+            <p>Phone: 9701309159</p>
+            <p>Email: bhavya@example.com</p>
+            <p>Address: 123 Hyderabad</p>
+            <button onclick="showDonationPopup('Bhavya', 'bhavya@example.com')">Choose</button>
+        </div>
+    </div>
+
+    <script>
+        async function showDonationPopup(name, email) {
+            alert(`You have chosen ${name} to donate for homeless support.`);
+            try {
+                // Assuming you have the logged-in user's name stored in a variable called loggedInUserName
+                const loggedInUserName = 'LoggedInUser'; // Replace with actual logged-in user name
+
+                const response = await fetch('/sendVolunteerEmail', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, loggedInUserName }), // Send logged-in user's name
+                });
+
+                if (response.ok) {
+                    console.log('Email request sent successfully');
+                } else {
+                    console.error('Failed to send email request');
+                }
+            } catch (error) {
+                console.error('Error sending email request:', error);
+            }
+        }
+    </script>
+</body>
+</html>

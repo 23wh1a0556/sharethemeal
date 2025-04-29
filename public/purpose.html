@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://c8.alamy.com/comp/2D846M3/concept-of-charity-and-donation-background-with-hands-flat-design-vector-illustration-2D846M3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .profile-name {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        .profile-name:hover {
+            color: green;
+            cursor: pointer;
+        }
+
+        .actions-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+        }
+
+        .action-button {
+            padding: 20px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+            text-align: center;
+            background-color: #eee;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-button:hover {
+            background-color: #5cb85c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-header">
+        <img src="https://th.bing.com/th/id/OIP.Zoe4M4iIcrwX-1BVbi8fkAHaJE?rs=1&pid=ImgDetMain" alt="Profile Picture" class="profile-image">
+        <div class="profile-name" id="userNameDisplay">John Doe</div>
+    </div>
+
+    <div class="actions-container">
+        <a href="sharethemeal.html" style="text-decoration: none;">
+            <button class="action-button">Share Meal (Max 2 ppl)</button>
+        </a>
+
+        <a href="sharelarge.html" style="text-decoration: none;">
+            <button class="action-button">Share Large</button>
+        </a>
+
+        <a href="needmeal.html" style="text-decoration: none;">
+            <button class="action-button">Need Meal</button>
+        </a>
+    </div>
+
+    <script>
+        const userName = localStorage.getItem('userName');
+        if (userName) {
+            document.getElementById('userNameDisplay').textContent = userName;
+        } else {
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name');
+            if(name){
+                document.getElementById('userNameDisplay').textContent = name;
+            }
+        }
+    </script>
+</body>
+</html>

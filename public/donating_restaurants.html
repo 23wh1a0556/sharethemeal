@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donating Restaurants</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        .restaurant-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Restaurants Ready to Donate</h1>
+    <div id="restaurantList"></div>
+
+    <script>
+        async function fetchDonatingRestaurants() {
+            try {
+                const response = await fetch('/getDonatingRestaurants');
+                const restaurants = await response.json();
+
+                const restaurantList = document.getElementById('restaurantList');
+                restaurants.forEach(restaurant => {
+                    const restaurantItem = document.createElement('div');
+                    restaurantItem.classList.add('restaurant-item');
+                    restaurantItem.innerHTML = `
+                        <h2>${restaurant.restaurant_name}</h2>
+                        <p>Address: ${restaurant.address}</p>
+                    `;
+                    restaurantList.appendChild(restaurantItem);
+                });
+            } catch (error) {
+                console.error('Error fetching donating restaurants:', error);
+            }
+        }
+
+        fetchDonatingRestaurants();
+    </script>
+</body>
+</html>

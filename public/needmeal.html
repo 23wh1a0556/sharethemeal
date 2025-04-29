@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Need Meal</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        .meal-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #e9ecef;
+            line-height: 1.6;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .meal-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .meal-item p {
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        .claimed-meal {
+            display: none;
+        }
+        .claim-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .claim-button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        .claimed-message {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 1.2rem;
+        }
+        #sharedMealsList {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Available Shared Meals</h1>
+        <div id="sharedMealsList"></div>
+    </div>
+    <script>
+        async function fetchSharedMeals() {
+            try {
+                const response = await fetch('/getSharedMeals');
+                console.log("Response Status:", response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const meals = await response.json();
+                console.log("Fetched meals:", meals);
+
+                const sharedMealsList = document.getElementById('sharedMealsList');
+                sharedMealsList.innerHTML = '';
+
+                if (meals && meals.length > 0) {
+                    meals.forEach(meal => {
+                        const mealItem = document.createElement('div');
+                        mealItem.classList.add('meal-item');
+                        if (meal.claimed) {
+                            mealItem.classList.add('claimed-meal');
+                        }
+                        mealItem.innerHTML = `
+                            <h2 class="${meal.claimed ? 'claimed-title' : ''}">${meal.sharer_name}</h2>
+                            <p>Food: ${meal.food_description}</p>
+                            <p>Location: ${meal.location}</p>
+                            <p>Contact: ${meal.contact_info}</p>
+                            ${meal.claimed
+                                ? `<p class="claimed-message">Claimed</p>`
+                                : `<button class="claim-button" onclick="claimMeal(${meal.id})">Claim Meal</button>`
+                            }
+                        `;
+                        sharedMealsList.appendChild(mealItem);
+                    });
+                } else {
+                    sharedMealsList.innerHTML = '<p>No meals available at the moment.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching shared meals:', error);
+                alert('Failed to fetch meals. Please check the console.');
+            }
+        }
+
+        async function claimMeal(mealId) {
+            try {
+                const response = await fetch('/claimMeal', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ mealId: mealId }),
+                });
+                console.log("Claim Meal Response Status:", response.status);
+                const responseText = await response.text();
+                console.log("Claim Meal Response Text:", responseText);
+
+                if (response.ok) {
+                    alert('Meal claimed successfully!');
+                    fetchSharedMeals();
+                } else {
+                    console.error('Failed to claim meal:', responseText);
+                    alert('Failed to claim meal. See console for details.  Server response: ' + responseText);
+                }
+            } catch (error) {
+                console.error('Error claiming meal:', error);
+                alert('Error claiming meal. See console for details.');
+            }
+        }
+
+        // Call fetchSharedMeals when the page loads
+        fetchSharedMeals();
+    </script>
+</body>
+</html>

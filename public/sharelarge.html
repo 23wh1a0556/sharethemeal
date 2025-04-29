@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Donate</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: url('https://c8.alamy.com/comp/2D846M3/concept-of-charity-and-donation-background-with-hands-flat-design-vector-illustration-2D846M3.jpg') no-repeat center center fixed; background-size: cover; display: flex; justify-content: center; align-items: center; }
+        .container { background-color: rgba(255, 255, 255, 0.9); padding: 40px 30px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); max-width: 420px; width: 90%; }
+        h1 { margin-bottom: 30px; font-size: 28px; color: #333; }
+        .option-link { text-decoration: none; }
+        .option-btn { display: flex; align-items: center; justify-content: flex-start; gap: 15px; width: 100%; padding: 15px 20px; margin: 15px 0; font-size: 18px; background-color: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s; text-align: left; }
+        .option-btn:hover { background-color: #45a049; }
+        .option-btn img { width: 40px; height: 40px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Where to Donate</h1>
+
+        <div id="orphanageListLink" style="display: none;">
+            <a class="option-link" href="orphanage_list.html">
+                <button class="option-btn">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3448/3448570.png" alt="NGO Icon" />
+                    Orphanages
+                </button>
+            </a>
+        </div>
+
+        <div id="restaurantOption" style="display: none;">
+            <a class="option-link" href="restaurant_list.html">
+                <button class="option-btn">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2060/2060464.png" alt="Restaurant Icon" />
+                    Restaurants
+                </button>
+            </a>
+            <a class="option-link" href="donate_to_orphanage.html">
+                <button class="option-btn">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2060/2060464.png" alt="Orphanage Icon" />
+                    Donate to Orphanage
+                </button>
+            </a>
+        </div>
+
+        <a class="option-link" href="homeless_organisations.html">
+            <button class="option-btn">
+                <img src="https://cdn-icons-png.flaticon.com/512/2060/2060464.png" alt="Homeless Icon" />
+                Homeless
+            </button>
+        </a>
+    </div>
+
+    <script>
+        const userRole = localStorage.getItem('userRole');
+        if (userRole === 'restaurant') {
+            document.getElementById('restaurantOption').style.display = 'block';
+        } else {
+            document.getElementById('orphanageListLink').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
